@@ -90,3 +90,11 @@ Yahoo's sector (renamed by `YAHOO_TO_SIMM`). When you buy something new, add it 
   paste it into Google Docs, or print it to PDF.
 - Last known prices and company/sector info are stored in the database (new tables are created automatically in `fund.db`; with Google
   Sheets the `last_prices`, `company_info`, `trades` and `pitches` worksheets are created automatically).
+
+## If Yahoo Finance blocks the hosted app ("Market data ... is unavailable")
+Yahoo rate-limits Streamlit Cloud's shared servers, and old yfinance versions stopped working in 2026 (`requirements.txt` now asks for `yfinance>=1.3.0`).
+The app keeps a saved copy of market data as a fallback:
+1. On your own computer: `pip install -r requirements.txt`, then `python make_snapshot.py` (add `--extra NVDA,AMD` for tickers you plan to pitch).
+2. Upload the new `data_snapshot` folder to GitHub, next to `app.py`, then Reboot the app.
+When live data fails, the app shows a banner ("uses saved market data through <date>") and a technical detail line instead of an empty page.
+Re-run `make_snapshot.py` whenever you want fresher saved data. For a live presentation you can also run the app on your own laptop with `streamlit run app.py`.

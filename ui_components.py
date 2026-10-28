@@ -65,6 +65,7 @@ def fmt_change(kind, v):
 def apply_branding():
     """Inject brand CSS + sidebar brand block. Call once at the top of every page."""
     B, Y, C, BD = config.BROWN, config.YELLOW, config.CREAM, config.BORDER
+    st.session_state["_data_snapshot"], st.session_state["_data_error"] = None, ""   # reset the data-status flags each run
     st.markdown(f"""<style>
     #MainMenu, footer, .stDeployButton {{visibility:hidden;}}
     header[data-testid="stHeader"] {{background:transparent;}}
@@ -154,6 +155,16 @@ def kpi_cards(items):
 
 
 FLAG_LABEL = {"danger": "ALERT", "warn": "WATCH", "ok": "CLEAR", "info": "NOTE"}
+
+
+def data_status_banner():
+    """Tell the user when saved market data (not live Yahoo data) is being shown, and why live data failed."""
+    ss = st.session_state
+    if ss.get("_data_snapshot"):
+        flag("info", f"Live prices are unavailable right now, so some or all of this page uses saved market data through "
+                     f"{ss['_data_snapshot']}. Metrics reflect that date, not today.")
+    if ss.get("_data_error"):
+        st.caption(f"Technical detail: {ss['_data_error']}")
 
 
 def flag(kind, text):

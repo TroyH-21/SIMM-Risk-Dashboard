@@ -125,6 +125,7 @@ with st.spinner("Running simulation..."):
     prices = data_fetcher.get_prices(all_t, ctx["years"])
     info = data_fetcher.get_company_info(sorted(set(held) | set(pitched)))
 gone = [t for t in pitched + [BM] if t not in prices.columns]
+ui.data_status_banner()
 if prices.empty or gone:
     st.error(f"Price history is unavailable right now for: {', '.join(gone) or 'all tickers'}. Try again shortly.")
     st.stop()

@@ -92,6 +92,7 @@ with tab_dash:
     with st.spinner("Loading market data..."):
         prices = data_fetcher.get_prices(tickers, ctx["years"])
         info = data_fetcher.get_company_info(held)
+    ui.data_status_banner()
     if prices.empty or BM not in prices.columns:
         st.error(f"Market data for {BM} is unavailable right now (Yahoo Finance may be rate-limiting). Try again in a few minutes.")
         st.stop()
